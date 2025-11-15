@@ -1,0 +1,15 @@
+{{!--  detalle con botón de agregar --}}
+{{> header}}
+
+<h1>{{producto.name}}</h1>
+
+<p>ID: {{producto.id}}</p>
+<p>Precio: ${{producto.price}}</p>
+<p>Categoría: {{producto.category}}</p>
+<p>Descripción: {{producto.description}}</p>
+
+<form action="/api/carts/1/product/{{producto.id}}" method="POST">
+    <button type="submit">Agregar al carrito</button>
+</form>
+
+<a href="/products">Volver a productos</a>

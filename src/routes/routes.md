@@ -1,0 +1,1 @@
+Define las rutas y qué controlador manejará cada endpoint.

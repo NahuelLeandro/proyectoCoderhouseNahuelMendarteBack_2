@@ -1,0 +1,31 @@
+{{!-- carrito poblado --}}
+
+{{> header}}
+
+
+{{#if carrito.products.length}}
+<ul>
+    {{#each carrito.products}}
+    <li>
+        <h3>{{this.product.name}}</h3>
+        <p>Precio unitario: ${{this.product.price}}</p>
+        <p>Cantidad: {{this.quantity}}</p>
+        <p>Subtotal: ${{multiply this.product.price this.quantity}}</p>
+        <form action="/api/carts/{{../carrito.id}}/products/{{this.product.id}}" method="PUT">
+        <input type="number" name="quantity" value="{{this.quantity}}" min="1">
+        <button type="submit">Actualizar cantidad</button>
+        </form>
+        <form action="/api/carts/{{../carrito.id}}/products/{{this.product.id}}" method="DELETE">
+        <button type="submit">Eliminar del carrito</button>
+        </form>
+    </li>
+    {{/each}}
+</ul>
+<p>
+    <strong>Total: ${{calculateTotal carrito.products}}</strong>
+</p>
+{{else}}
+<p>El carrito está vacío.</p>
+{{/if}}
+
+<a href="/products">Volver a productos</a>

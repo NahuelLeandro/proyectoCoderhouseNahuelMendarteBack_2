@@ -1,0 +1,15 @@
+{{#if user}}
+    <h1>Bienvenido, {{user.email}} 👋</h1>
+    <p>Tu rol: <strong>{{user.role}}</strong></p>
+
+    <button onclick="window.location.href='/user/logout'">Cerrar sesión</button>
+
+    {{#if (eq user.role "admin")}}
+        <p><a href="/products">Ir a panel de productos (admin)</a></p>
+    {{else}}
+        <p><a href="/products">Ver productos</a></p>
+    {{/if}}
+{{else}}
+    <h1>Bienvenido invitado 👋</h1>
+    <p><a href="/user/login">Iniciar sesión</a> o <a href="/user/register">Registrate</a></p>
+{{/if}}
