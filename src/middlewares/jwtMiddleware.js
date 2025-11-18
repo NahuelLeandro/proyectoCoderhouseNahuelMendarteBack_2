@@ -8,19 +8,30 @@ export function generateToken(user) {
     );
 }
 
-export function verifyToken(req, res, next) {
+export function authJWT(req, res, next) {
+
+    // 1️⃣ Buscar token en header Authorization (Postman)
+    let token = null;
     const authHeader = req.headers.authorization;
 
-    if (!authHeader)
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+        token = authHeader.split(" ")[1];
+    }
+
+    // 2️⃣ Si no vino, buscar en cookies (Navegador)
+    if (!token && req.cookies && req.cookies.token) {
+        token = req.cookies.token;
+    }
+
+    if (!token) {
         return res.status(401).json({ error: "Token no enviado" });
+    }
 
-    const token = authHeader.split(" ")[1];
-
+    // 3️⃣ Verificar token
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err)
-            return res.status(403).json({ error: "Token inválido" });
+        if (err) return res.status(403).json({ error: "Token inválido" });
 
-        req.user = decoded; // <- acá queda la info del token
+        req.user = decoded;
         next();
     });
 }

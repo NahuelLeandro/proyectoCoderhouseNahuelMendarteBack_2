@@ -9,7 +9,7 @@
 // | DELETE | `/:pid` | Eliminar producto por ID                     |
 
 import { isAuthenticated, isAdmin } from "../middlewares/authMiddleware.js";
-import { verifyToken } from "../middlewares/jwtMiddleware.js";
+import { authJWT  } from "../middlewares/jwtMiddleware.js";
 
 import express from "express";
 import productController from "../controllers/productController.js";
@@ -18,10 +18,10 @@ const router = express.Router();
 
 // 🛒 Endpoints de Productos
 //router.get("/", isAuthenticated, productController.renderProductsView);
-router.get("/", verifyToken, productController.getAllProducts);
-router.get("/:pid", verifyToken, productController.getProductById);
-router.post("/", verifyToken, productController.createProduct);
-router.put("/:pid", verifyToken, productController.updatedProductById);
-router.delete("/:pid", verifyToken, productController.deleteProductById);
+router.get("/", productController.getAllProducts);
+router.get("/:pid", productController.getProductById);
+router.post("/", authJWT , productController.createProduct);
+router.put("/:pid", authJWT , productController.updatedProductById);
+router.delete("/:pid", authJWT , productController.deleteProductById);
 
 export default router;
