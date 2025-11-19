@@ -10,7 +10,10 @@ import { paths } from "./config/config.js";
 import connectMongo from "./config/mongoConfig.js";
 import setupHandlebars from "./config/hbsConfig.js";
 import initSocket from "./config/socketConfig.js";
-import initializePassport from "./config/passport.config.js";
+//import initializePassport from "./config/passport.config.js";
+
+
+import initializePassport from "./config/passport2.config.js";
 
 dotenv.config();
 

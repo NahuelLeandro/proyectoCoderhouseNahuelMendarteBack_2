@@ -8,20 +8,21 @@
 // | PUT    | `/:pid` | Actualizar campos del producto excepto el ID |
 // | DELETE | `/:pid` | Eliminar producto por ID                     |
 
-import { isAuthenticated, isAdmin } from "../middlewares/authMiddleware.js";
-import { authJWT  } from "../middlewares/jwtMiddleware.js";
 
 import express from "express";
 import productController from "../controllers/productController.js";
 
+import { authJWT  } from "../middlewares/jwtMiddleware.js";
+import { checkRole } from "../middlewares/checkRole.js";
+
 const router = express.Router();
 
 // 🛒 Endpoints de Productos
-//router.get("/", isAuthenticated, productController.renderProductsView);
-router.get("/", productController.getAllProducts);
-router.get("/:pid", productController.getProductById);
-router.post("/", authJWT , productController.createProduct);
-router.put("/:pid", authJWT , productController.updatedProductById);
-router.delete("/:pid", authJWT , productController.deleteProductById);
+
+router.get("/", authJWT , productController.getAllProducts);
+router.get("/:pid", authJWT , productController.getProductById);
+router.post("/", authJWT , checkRole("admin"), productController.createProduct);
+router.put("/:pid", authJWT , checkRole("admin"), productController.updatedProductById);
+router.delete("/:pid", authJWT , checkRole("admin"), productController.deleteProductById);
 
 export default router;
