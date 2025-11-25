@@ -10,24 +10,30 @@ export function generateToken(user) {
 
 export function authJWT(req, res, next) {
 
-    // 1️⃣ Buscar token en header Authorization (Postman)
     let token = null;
-    const authHeader = req.headers.authorization;
 
-    if (authHeader && authHeader.startsWith("Bearer ")) {
+    // 1️⃣ Buscar token en header Authorization (POSTMAN)
+    const authHeader = req.headers.authorization;
+    if (authHeader?.startsWith("Bearer ")) {
         token = authHeader.split(" ")[1];
     }
 
-    // 2️⃣ Si no vino, buscar en cookies (Navegador)
-    if (!token && req.cookies && req.cookies.token) {
+    // 2️⃣ Buscar token en cookies firmadas (NAVEGADOR SEGURO)
+    if (!token && req.signedCookies?.token) {
+        token = req.signedCookies.token;
+    }
+
+    // 3️⃣ Buscar token en cookies NO firmadas (compatibilidad opcional)
+    if (!token && req.cookies?.token) {
         token = req.cookies.token;
     }
 
+    // 4️⃣ Si sigue sin haber token → No autorizado
     if (!token) {
         return res.status(401).json({ error: "Token no enviado" });
     }
 
-    // 3️⃣ Verificar token
+    // 5 Verificar token
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) return res.status(403).json({ error: "Token inválido" });
 

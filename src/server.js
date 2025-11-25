@@ -39,7 +39,7 @@ const io = initSocket(server);
 
 
 // Cookies y sesión
-app.use(cookieParser("secreto"));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
     session({
         secret: "secreto",

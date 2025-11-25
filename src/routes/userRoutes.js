@@ -131,6 +131,7 @@ router.post("/api/login-JWT", async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
+            signed: true,
             maxAge: 24 * 60 * 60 * 1000
         });
 
